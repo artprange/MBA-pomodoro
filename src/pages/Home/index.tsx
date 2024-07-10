@@ -9,9 +9,9 @@ import {
   StartCountDownButton,
   StopCountDownButton,
 } from './styles'
-import { NewCycleForm } from './components/NewCycleForm'
-import { Countdown } from './components/Countdown'
 
+import { Countdown } from './components/Countdown'
+import { NewCycleForm } from './components/NewCycleForm'
 interface Cycle {
   id: string
   task: string
@@ -20,25 +20,25 @@ interface Cycle {
   interruptedDate?: Date
   finishedDate?: Date
 }
-
 interface CyclesContextType {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
-  markCurrentCycleAsFinished: () => void
   amountSecondsPassed: number
+  markCurrentCycleAsFinished: () => void
+  setSecondsPassed: (seconds: number) => void
 }
 
 export const CyclesContext = createContext({} as CyclesContextType)
 
-const NewCycleFormValidationSchema = zod.object({
+const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'Informe a tarefa'),
   minutesAmount: zod
     .number()
     .min(5, 'O ciclo precisa ser de no mínimo 5 minutos.')
-    .max(60, 'O ciclo pode ter ao máximo 60 minutos'),
+    .max(60, 'O ciclo precisa ser de no máximo 60 minutos.'),
 })
 
-type NewCycleFormData = zod.infer<typeof NewCycleFormValidationSchema>
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 export function Home() {
   const [cycles, setCycles] = useState<Cycle[]>([])
@@ -46,7 +46,7 @@ export function Home() {
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
   const newCycleForm = useForm<NewCycleFormData>({
-    resolver: zodResolver(NewCycleFormValidationSchema),
+    resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: '',
       minutesAmount: 0,
@@ -56,6 +56,10 @@ export function Home() {
   const { handleSubmit, watch, reset } = newCycleForm
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  function setSecondsPassed(seconds: number) {
+    setAmountSecondsPassed(seconds)
+  }
 
   function markCurrentCycleAsFinished() {
     setCycles((state) =>
@@ -98,6 +102,7 @@ export function Home() {
     )
     setActiveCycleId(null)
   }
+
   const task = watch('task')
   const isSubmitDisable = !task
 
@@ -110,6 +115,7 @@ export function Home() {
             activeCycleId,
             markCurrentCycleAsFinished,
             amountSecondsPassed,
+            setSecondsPassed,
           }}
         >
           <FormProvider {...newCycleForm}>
