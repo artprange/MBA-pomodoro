@@ -6,7 +6,7 @@ import { CountdownContainer, Separator } from './styles'
 export function Countdown() {
   const { activeCycle, activeCycleId, markCurrentCycleAsFinished } =
     useContext(CyclesContext)
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
 
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
 
