@@ -10,4 +10,9 @@ export const LayoutContainer = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  
+    @media (max-width: 768px) {
+    max-width: 90%;
+    padding: 0;
+  }
 `
