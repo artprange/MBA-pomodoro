@@ -11,6 +11,16 @@ export const CountdownContainer = styled.div`
     background: ${(props) => props.theme['gray-700']};
     padding: 2rem 1rem;
     border-radius: 8px;
+    @media (max-width: 768px) {
+      width: 3.5rem;
+      height: 4rem;
+      padding: 1rem;
+      font-size: 3.5rem;
+      line-height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `
 export const Separator = styled.div`
@@ -20,4 +30,8 @@ export const Separator = styled.div`
   overflow: hidden;
   display: flex;
   justify-content: center;
+  @media (max-width: 768px) {
+    font-size: 5rem;
+    margin-top: -4.5rem;
+  }
 `
